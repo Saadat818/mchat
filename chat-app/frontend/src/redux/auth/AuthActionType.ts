@@ -1,0 +1,13 @@
+export const REGISTER = "REGISTER";
+export const LOGIN_USER = "LOGIN_USER";
+export const REQ_USER = "REQ_USER";
+export const SEARCH_USER = "SEARCH_USER";
+export const UPDATE_USER = "UPDATE_USER";
+export const LOGOUT_USER = "LOGOUT_USER";
+export const AUTH_LOADING = "AUTH_LOADING";
+export const AUTH_ERROR = "AUTH_ERROR";
+export const CLEAR_AUTH_ERROR = "CLEAR_AUTH_ERROR";
+export const PIN_CHAT = "PIN_CHAT";
+export const UNPIN_CHAT = "UNPIN_CHAT";
+export const MUTE_CHAT = "MUTE_CHAT";
+export const UNMUTE_CHAT = "UNMUTE_CHAT";

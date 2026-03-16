@@ -1,0 +1,345 @@
+.ownMessage {
+  align-self: flex-end;
+  margin-top: 0.75rem;
+  max-width: 70%;
+}
+
+.othersMessage {
+  align-self: flex-start;
+  margin-top: 0.75rem;
+  max-width: 70%;
+}
+
+.date {
+  align-self: center;
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: #666666;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.bubbleContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 1rem;
+}
+
+.contentContainer {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  text-wrap: wrap;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.timeContainer {
+  align-self: flex-end;
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 0.7rem;
+  color: #888888;
+}
+
+.timeStatusContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 4px;
+  gap: 2px;
+}
+
+.timeText {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+// Для сообщений других пользователей - тёмный текст времени
+.othersMessage .timeText {
+  color: #888888;
+}
+
+.messageCardInnerContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.editedLabel {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  margin-right: 4px;
+}
+
+.othersMessage .editedLabel {
+  color: #999999;
+}
+
+.deletedMessage {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.othersMessage .deletedMessage {
+  color: #888888;
+}
+
+.messageWrapper {
+  position: relative;
+}
+
+.contextMenuTrigger {
+  cursor: context-menu;
+}
+
+// Стили для цитируемого сообщения (Reply)
+.replyContainer {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 6px;
+  padding: 4px 0;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-left: -4px;
+  margin-right: -4px;
+  padding-left: 4px;
+  padding-right: 8px;
+}
+
+.replyLine {
+  width: 3px;
+  background-color: #FFD600;
+  border-radius: 2px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.replyContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.replyUserName {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #FFD600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.replyText {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+// Для сообщений других пользователей
+.othersMessage .replyContainer {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.othersMessage .replyLine {
+  background-color: #00875A;
+}
+
+.othersMessage .replyUserName {
+  color: #00875A;
+}
+
+.othersMessage .replyText {
+  color: #666666;
+}
+
+// Стили для пересланного сообщения
+.forwardedHeader {
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.othersMessage .forwardedHeader {
+  color: #888888;
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+// Стили для вложений
+.attachmentsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.attachmentImage {
+  max-width: 250px;
+  max-height: 200px;
+  border-radius: 8px;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.attachmentFile {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.85rem;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.othersMessage .attachmentFile {
+  background-color: rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.fileSize {
+  margin-left: 4px;
+  opacity: 0.7;
+  font-size: 0.75rem;
+}
+
+// Стили для аудио плеера (голосовые сообщения)
+.audioContainer {
+  margin: 4px 0;
+}
+
+.audioPlayer {
+  width: 100%;
+  max-width: 250px;
+  height: 36px;
+  border-radius: 18px;
+
+  &::-webkit-media-controls-panel {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+  }
+}
+
+.othersMessage .audioPlayer {
+  &::-webkit-media-controls-panel {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+// Стили для реакций
+.reactionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.reactionBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+  }
+}
+
+.reactionBadgeActive {
+  background-color: rgba(255, 215, 0, 0.3);
+  border-color: #FFD600;
+}
+
+.othersMessage .reactionBadge {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.othersMessage .reactionBadgeActive {
+  background-color: rgba(0, 135, 90, 0.15);
+  border-color: #00875A;
+}
+
+.reactionEmoji {
+  font-size: 0.9rem;
+}
+
+.reactionCount {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.othersMessage .reactionCount {
+  color: #666666;
+}
+
+// Popover выбора реакции
+.reactionPicker {
+  display: flex;
+  padding: 8px;
+  gap: 4px;
+}
+
+.reactionPickerButton {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    transform: scale(1.2);
+  }
+}
+
+// Подсветка найденного текста
+.highlightedText {
+  background-color: #FFD600;
+  color: #000000;
+  padding: 1px 2px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.othersMessage .highlightedText {
+  background-color: #FFD600;
+  color: #000000;
+}

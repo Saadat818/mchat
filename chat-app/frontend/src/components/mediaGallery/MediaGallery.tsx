@@ -4,6 +4,7 @@ import { AttachmentDTO } from '../../redux/message/MessageModel';
 import { IconButton, Dialog } from '@mui/material';
 import WestIcon from '@mui/icons-material/West';
 import CloseIcon from '@mui/icons-material/Close';
+import DownloadIcon from '@mui/icons-material/Download';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { BASE_API_URL } from '../../config/Config';
 import styles from './MediaGallery.module.scss';
@@ -100,6 +101,16 @@ const MediaGallery = ({ chat, onClose }: MediaGalleryProps) => {
                 >
                     <CloseIcon />
                 </IconButton>
+                {lightboxUrl && (
+                    <IconButton
+                        component="a"
+                        href={lightboxUrl}
+                        download
+                        sx={{ position: 'absolute', top: 8, right: 52, color: '#fff', zIndex: 1 }}
+                    >
+                        <DownloadIcon />
+                    </IconButton>
+                )}
                 {lightboxUrl && (
                     <img
                         src={lightboxUrl}

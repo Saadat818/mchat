@@ -1,7 +1,7 @@
 import {IconButton, InputAdornment, Menu, MenuItem, TextField} from "@mui/material";
 import ColorAvatar from "../common/ColorAvatar";
 import {getChatName, getInitialsFromName} from "../utils/Utils";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {ChatDTO} from "../../redux/chat/ChatModel";
 import {UserDTO} from "../../redux/auth/AuthModel";
 import styles from './MesaggePage.module.scss';
@@ -24,6 +24,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {EmojiClickData} from "emoji-picker-react/dist/types/exposedTypes";
 import TypingIndicator from "../typingIndicator/TypingIndicator";
 import PermMediaIcon from '@mui/icons-material/PermMedia';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MediaGallery from "../mediaGallery/MediaGallery";
 
 interface MessagePageProps {
@@ -62,6 +63,8 @@ const MessagePage = (props: MessagePageProps) => {
     const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
     const [isDragOver, setIsDragOver] = useState<boolean>(false);
     const lastMessageRef = useRef<null | HTMLDivElement>(null);
+    const messageContainerRef = useRef<null | HTMLDivElement>(null);
+    const [showScrollButton, setShowScrollButton] = useState(false);
     const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const isTypingRef = useRef<boolean>(false);
     const lastTypingSignalAtRef = useRef<number>(0);
@@ -73,7 +76,14 @@ const MessagePage = (props: MessagePageProps) => {
 
     useEffect(() => {
         scrollToBottom();
-    }, [props]);
+        setShowScrollButton(false);
+    }, [props.chat.id]);
+
+    useEffect(() => {
+        if (!showScrollButton) {
+            scrollToBottom();
+        }
+    }, [props.messages.length]);
 
     useEffect(() => {
         return () => {
@@ -117,6 +127,14 @@ const MessagePage = (props: MessagePageProps) => {
         }
     };
 
+    const handleContainerScroll = useCallback(() => {
+        const container = messageContainerRef.current;
+        if (!container) return;
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+        setShowScrollButton(distanceFromBottom > 150);
+    }, []);
+
     // Получаем собеседника для личного чата
     const getChatPartner = (): UserDTO | null => {
         if (props.chat.isGroup) return null;
@@ -144,9 +162,13 @@ const MessagePage = (props: MessagePageProps) => {
 
     // Получаем статус для отображения
     const getStatusText = (): string | null => {
+        if (props.chat.isGroup) {
+            const onlineCount = (props.chat.users || []).filter(u => u.isOnline).length;
+            const total = (props.chat.users || []).length;
+            return `${onlineCount} из ${total} онлайн`;
+        }
         const partner = getChatPartner();
-        if (!partner) return null; // Групповой чат
-
+        if (!partner) return null;
         if (partner.isOnline) return 'онлайн';
         if (partner.lastSeen) return `был(а) ${formatLastSeen(partner.lastSeen)}`;
         return null;
@@ -360,6 +382,11 @@ const MessagePage = (props: MessagePageProps) => {
                 />
     };
 
+    const unreadCount = props.messages.filter(msg =>
+        msg.user.id !== props.reqUser?.id &&
+        !msg.readBy.includes(props.reqUser!.id)
+    ).length;
+
     const getHeaderStatusText = (): string | null => {
         if (props.typingUserName) {
             return `${props.typingUserName} печатает...`;
@@ -479,7 +506,12 @@ const MessagePage = (props: MessagePageProps) => {
             )}
 
             {/*Message Page Content*/}
-            <div className={styles.messageContentContainer} onClick={onCloseEmojiPicker}>
+            <div
+                className={styles.messageContentContainer}
+                ref={messageContainerRef}
+                onScroll={handleContainerScroll}
+                onClick={onCloseEmojiPicker}
+            >
                 {messageQuery.length > 0 &&
                     props.messages.filter(x => x.content.toLowerCase().includes(messageQuery))
                         .map(message => getMessageCard(message))}
@@ -490,6 +522,17 @@ const MessagePage = (props: MessagePageProps) => {
                 )}
                 <div ref={lastMessageRef}></div>
             </div>
+
+            {/* Кнопка «прокрутить вниз» */}
+            {showScrollButton && (
+                <button
+                    className={styles.scrollToBottomBtn}
+                    onClick={() => { scrollToBottom(); setShowScrollButton(false); }}
+                >
+                    <KeyboardArrowDownIcon sx={{ fontSize: '1.4rem' }} />
+                    {unreadCount > 0 && <span className={styles.scrollBtnBadge}>{unreadCount}</span>}
+                </button>
+            )}
 
             {/*Message Page Footer*/}
             <div className={styles.footerContainer}>

@@ -425,10 +425,15 @@ const MessagePage = (props: MessagePageProps) => {
                             <ColorAvatar
                                 name={getChatName(props.chat, props.reqUser)}
                                 size={40}
+                                src={props.chat.groupAvatar ?? undefined}
                             />
-                            {getChatPartner()?.isOnline && (
-                                <span className={styles.onlineIndicator}></span>
-                            )}
+                            {getChatPartner()?.isOnline && (() => {
+                                const partner = getChatPartner();
+                                const dotColor = partner?.userStatus === 'AWAY' ? '#f59e0b'
+                                    : partner?.userStatus === 'DO_NOT_DISTURB' ? '#ef4444'
+                                    : undefined;
+                                return <span className={styles.onlineIndicator} style={dotColor ? { backgroundColor: dotColor } : undefined}></span>;
+                            })()}
                         </div>
                         <div className={styles.chatInfoContainer}>
                             <p className={styles.chatName}>{getChatName(props.chat, props.reqUser)}</p>

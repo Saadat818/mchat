@@ -76,6 +76,16 @@ const ChatCard = (props: ChatCardProps) => {
         ? props.chat.users.find(u => u.id !== authState.reqUser?.id)
         : undefined;
     const isOnline: boolean = !!otherUser?.isOnline;
+
+    const getStatusDotColor = (): string | null => {
+        if (!isOnline) return null;
+        switch (otherUser?.userStatus) {
+            case 'AWAY': return '#f59e0b';
+            case 'DO_NOT_DISTURB': return '#ef4444';
+            default: return null; // использует CSS var(--accent)
+        }
+    };
+    const statusDotColor = getStatusDotColor();
     const lastMessageString: string = lastMessage ? lastMessageName + ": " + lastMessageContent : "";
     const lastDate: string = lastMessage ? transformDateToString(new Date(lastMessage.timeStamp)) : "";
     const numberOfReadMessages: number = props.chat.messages.filter(msg =>
@@ -86,7 +96,12 @@ const ChatCard = (props: ChatCardProps) => {
         <div className={styles.chatCardOuterContainer} onContextMenu={handleContextMenu}>
             <div className={styles.chatCardAvatarContainer}>
                 <ColorAvatar name={name} size={44} />
-                {isOnline && <span className={styles.onlineDot}/>}
+                {isOnline && (
+                    <span
+                        className={styles.onlineDot}
+                        style={statusDotColor ? { backgroundColor: statusDotColor } : undefined}
+                    />
+                )}
             </div>
             <div className={styles.chatCardContentContainer}>
                 <div className={styles.chatCardContentInnerContainer}>

@@ -3,6 +3,7 @@ package com.nicolas.chatapp.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
+import com.nicolas.chatapp.model.UserStatus;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -35,6 +36,9 @@ public class User {
     // Онлайн статус
     private LocalDateTime lastSeen;
     private Boolean isOnline = false;
+
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus = UserStatus.ONLINE;
 
     // Закреплённые чаты (ID чатов)
     @ElementCollection

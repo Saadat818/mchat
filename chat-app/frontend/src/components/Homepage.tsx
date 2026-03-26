@@ -41,8 +41,12 @@ import {
     playNotificationSound,
     isTabFocused,
     updatePageTitle,
-    getNotificationSettings
+    getNotificationSettings,
+    saveNotificationSettings
 } from "../utils/notifications";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
+import Switch from '@mui/material/Switch';
 
 const Homepage = () => {
 
@@ -74,6 +78,8 @@ const Homepage = () => {
     const [forwardDialogOpen, setForwardDialogOpen] = useState<boolean>(false);
     const [messageToForward, setMessageToForward] = useState<MessageDTO | null>(null);
     const [selectedChatsForForward, setSelectedChatsForForward] = useState<string[]>([]);
+    const [notifDialogOpen, setNotifDialogOpen] = useState<boolean>(false);
+    const [notifSettings, setNotifSettings] = useState(getNotificationSettings());
     const open = Boolean(anchor);
 
     useEffect(() => {
@@ -477,6 +483,15 @@ const Homepage = () => {
         setIsShowCreateGroupChat(true);
     };
 
+    const handleNotifToggle = (key: 'soundEnabled' | 'browserNotificationsEnabled') => {
+        const updated = { ...notifSettings, [key]: !notifSettings[key] };
+        setNotifSettings(updated);
+        saveNotificationSettings(updated);
+        if (key === 'browserNotificationsEnabled' && updated.browserNotificationsEnabled) {
+            requestNotificationPermission();
+        }
+    };
+
     const onCreateSingleChat = () => {
         setIsShowCreateSingleChat(true);
     };
@@ -552,6 +567,11 @@ const Homepage = () => {
                                             />
                                         </div>
                                         <div>
+                                            <IconButton onClick={() => setNotifDialogOpen(true)} title="Настройки уведомлений">
+                                                {notifSettings.soundEnabled && notifSettings.browserNotificationsEnabled
+                                                    ? <NotificationsIcon/>
+                                                    : <NotificationsOffIcon/>}
+                                            </IconButton>
                                             <IconButton onClick={() => setIsShowGlobalSearch(true)} title="Глобальный поиск">
                                                 <ManageSearchIcon/>
                                             </IconButton>
@@ -704,6 +724,34 @@ const Homepage = () => {
                     >
                         Переслать ({selectedChatsForForward.length})
                     </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Диалог настроек уведомлений */}
+            <Dialog open={notifDialogOpen} onClose={() => setNotifDialogOpen(false)} maxWidth="xs" fullWidth>
+                <DialogTitle>Настройки уведомлений</DialogTitle>
+                <DialogContent>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: 14 }}>Звук уведомлений</span>
+                            <Switch
+                                checked={notifSettings.soundEnabled}
+                                onChange={() => handleNotifToggle('soundEnabled')}
+                                color="success"
+                            />
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: 14 }}>Браузерные уведомления</span>
+                            <Switch
+                                checked={notifSettings.browserNotificationsEnabled}
+                                onChange={() => handleNotifToggle('browserNotificationsEnabled')}
+                                color="success"
+                            />
+                        </div>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setNotifDialogOpen(false)}>Закрыть</Button>
                 </DialogActions>
             </Dialog>
         </div>

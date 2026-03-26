@@ -2,6 +2,7 @@ package com.nicolas.chatapp.controllers;
 
 import com.nicolas.chatapp.config.JwtConstants;
 import com.nicolas.chatapp.dto.request.GroupChatRequestDTO;
+import com.nicolas.chatapp.dto.request.UpdateGroupAvatarRequestDTO;
 import com.nicolas.chatapp.dto.response.ApiResponseDTO;
 import com.nicolas.chatapp.dto.response.ChatDTO;
 import com.nicolas.chatapp.exception.ChatException;
@@ -133,6 +134,20 @@ public class ChatController {
         User user = userService.findUserByProfile(jwt);
         Chat chat = chatService.pinMessage(chatId, messageId, user);
         log.info("User {} pinned message {} in chat: {}", user.getEmail(), messageId, chatId);
+
+        return new ResponseEntity<>(ChatDTO.fromChat(chat), HttpStatus.OK);
+    }
+
+    // Обновление аватара группы
+    @PutMapping("/{chatId}/avatar")
+    public ResponseEntity<ChatDTO> updateGroupAvatar(@PathVariable UUID chatId,
+                                                     @RequestBody UpdateGroupAvatarRequestDTO req,
+                                                     @RequestHeader(JwtConstants.TOKEN_HEADER) String jwt)
+            throws UserException, ChatException {
+
+        User user = userService.findUserByProfile(jwt);
+        Chat chat = chatService.updateGroupAvatar(chatId, req.groupAvatar(), user);
+        log.info("User {} updated avatar for group chat: {}", user.getEmail(), chatId);
 
         return new ResponseEntity<>(ChatDTO.fromChat(chat), HttpStatus.OK);
     }

@@ -5,6 +5,7 @@ import com.nicolas.chatapp.config.TokenProvider;
 import com.nicolas.chatapp.dto.request.UpdateUserRequestDTO;
 import com.nicolas.chatapp.exception.UserException;
 import com.nicolas.chatapp.model.User;
+import com.nicolas.chatapp.model.UserStatus;
 import com.nicolas.chatapp.repository.UserRepository;
 import com.nicolas.chatapp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,12 @@ public class UserServiceImpl implements UserService {
 
         if (Objects.nonNull(request.profilePhoto())) {
             user.setProfilePhoto(request.profilePhoto());
+        }
+
+        if (Objects.nonNull(request.userStatus())) {
+            try {
+                user.setUserStatus(UserStatus.valueOf(request.userStatus()));
+            } catch (IllegalArgumentException ignored) {}
         }
 
         return userRepository.save(user);

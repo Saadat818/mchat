@@ -567,11 +567,6 @@ const Homepage = () => {
                                             />
                                         </div>
                                         <div>
-                                            <IconButton onClick={() => setNotifDialogOpen(true)} title="Настройки уведомлений">
-                                                {notifSettings.soundEnabled && notifSettings.browserNotificationsEnabled
-                                                    ? <NotificationsIcon/>
-                                                    : <NotificationsOffIcon/>}
-                                            </IconButton>
                                             <IconButton onClick={() => setIsShowGlobalSearch(true)} title="Глобальный поиск">
                                                 <ManageSearchIcon/>
                                             </IconButton>
@@ -589,6 +584,12 @@ const Homepage = () => {
                                                 MenuListProps={{'aria-labelledby': 'basic-button'}}>
                                                 <MenuItem onClick={onOpenProfile}>Профиль</MenuItem>
                                                 <MenuItem onClick={onCreateGroupChat}>Создать группу</MenuItem>
+                                                <MenuItem onClick={() => { onCloseMenu(); setNotifDialogOpen(true); }}>
+                                                    {notifSettings.soundEnabled && notifSettings.browserNotificationsEnabled
+                                                        ? <NotificationsIcon sx={{ mr: 1, fontSize: '1.2rem' }} />
+                                                        : <NotificationsOffIcon sx={{ mr: 1, fontSize: '1.2rem' }} />}
+                                                    Уведомления
+                                                </MenuItem>
                                                 <MenuItem onClick={onLogout}>Выйти</MenuItem>
                                             </Menu>
                                         </div>

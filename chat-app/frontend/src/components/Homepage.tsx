@@ -8,7 +8,7 @@ import EditGroupChat from "./editChat/EditGroupChat";
 import Profile from "./profile/Profile";
 import {Avatar, Divider, IconButton, InputAdornment, Menu, MenuItem, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListItem, ListItemButton, ListItemAvatar, ListItemText, Checkbox} from "@mui/material";
 import ChatIcon from '@mui/icons-material/Chat';
-import MBankLogo from "./common/MBankLogo";
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ColorAvatar from "./common/ColorAvatar";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -551,7 +551,7 @@ const Homepage = () => {
                             <div className={styles.sideBarInnerContainer}>
                                 <div className={styles.navContainer}>
                                     <div onClick={onOpenProfile} className={styles.userInfoContainer}>
-                                        <MBankLogo size={36} />
+                                        <ChatBubbleIcon sx={{ fontSize: 24, color: '#00875A' }} />
                                         <span className={styles.navBrandText}>MyChat</span>
                                     </div>
                                     <div className={styles.navRightSection}>
